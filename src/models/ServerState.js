@@ -112,6 +112,7 @@ serverStateSchema.statics.incrementHunger = async function (increment = 10, max 
       upsert: true,
       returnDocument: 'after',
       setDefaultsOnInsert: true,
+      updatePipeline: true,
     }
   );
 };
