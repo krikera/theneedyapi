@@ -1,0 +1,32 @@
+{
+  "name": "theneedyapi",
+  "version": "1.0.0",
+  "description": "The Needy API (DB-Gotchi) - An enterprise-grade emotional state machine and digital pet backend with abandonment issues.",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "seed": "node src/scripts/seedData.js",
+    "test": "node --test src/tests/testSuite.test.js"
+  },
+  "keywords": [
+    "express",
+    "mongodb",
+    "mongoose",
+    "tamagotchi",
+    "api",
+    "portfolio"
+  ],
+  "author": "krikera",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^18.0.1",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0",
+    "helmet": "^8.3.0",
+    "mongoose": "^9.10.1",
+    "zod": "^4.6.5"
+  }
+}
