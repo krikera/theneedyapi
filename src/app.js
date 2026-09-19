@@ -14,19 +14,37 @@ const app = express();
 app.use(helmet({
   contentSecurityPolicy: false, // Allows Scalar documentation bundle from CDN
 }));
-app.use(globalLimiter);
+// CORS Configuration (before rate limiter so preflight OPTIONS requests are handled smoothly)
+const parseCorsOrigin = () => {
+  const envOrigin = process.env.CORS_ORIGIN;
+  if (!envOrigin || envOrigin.trim() === '*' || envOrigin.trim() === '') {
+    return '*';
+  }
+  const list = envOrigin.split(',').map((o) => o.trim()).filter(Boolean);
+  if (list.includes('*')) {
+    return '*';
+  }
+  return (origin, callback) => {
+    if (
+      !origin ||
+      list.includes(origin) ||
+      /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
+    ) {
+      return callback(null, true);
+    }
+    return callback(null, false);
+  };
+};
 
-// Parsers & CORS
-const corsOrigin = process.env.CORS_ORIGIN
-  ? process.env.CORS_ORIGIN.split(',').map((o) => o.trim())
-  : '*';
 app.use(
   cors({
-    origin: corsOrigin,
+    origin: parseCorsOrigin(),
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
+
+app.use(globalLimiter);
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
