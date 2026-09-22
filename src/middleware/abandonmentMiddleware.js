@@ -14,7 +14,7 @@ export const abandonmentMiddleware = async (req, res, next) => {
     const now = Date.now();
     const lastSeen = new Date(state.lastInteraction).getTime();
     const elapsedDormancy = now - lastSeen;
-    const thresholdMs = parseInt(process.env.ABANDONMENT_THRESHOLD_MS, 10) || 60000;
+    const thresholdMs = parseInt(process.env.ABANDONMENT_THRESHOLD_MS, 10) || 86400000;
 
     // Check if dormancy exceeded the threshold
     if (elapsedDormancy > thresholdMs && !state.isAngry) {

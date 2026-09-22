@@ -7,8 +7,8 @@ import ServerState from '../models/ServerState.js';
 let hungerIntervalId = null;
 
 export const startHungerDaemon = () => {
-  const tickIntervalMs = parseInt(process.env.HUNGER_TICK_INTERVAL_MS, 10) || 15000;
-  const hungerIncrement = parseInt(process.env.HUNGER_INCREMENT_PER_TICK, 10) || 10;
+  const tickIntervalMs = parseInt(process.env.HUNGER_TICK_INTERVAL_MS, 10) || 10800000;
+  const hungerIncrement = parseInt(process.env.HUNGER_INCREMENT_PER_TICK, 10) || 5;
 
   console.log(
     `Hunger service started. Cycle: ${tickIntervalMs / 1000}s, +${hungerIncrement}% per cycle.`

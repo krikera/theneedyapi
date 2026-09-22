@@ -57,12 +57,13 @@ describe('The Needy API (DB-Gotchi) Test Suite', () => {
 
   describe('2. Abandonment SLA Breach Interceptor', () => {
     it('trips abandonment and returns 403 Forbidden when neglected', async () => {
-      // Fast-forward lastInteraction to 2 hours ago
+      // Fast-forward lastInteraction past abandonment threshold
+      const thresholdMs = parseInt(process.env.ABANDONMENT_THRESHOLD_MS, 10) || 86400000;
       await ServerState.findOneAndUpdate(
         {},
         {
           $set: {
-            lastInteraction: new Date(Date.now() - 7200000),
+            lastInteraction: new Date(Date.now() - (thresholdMs + 60000)),
             isAngry: false,
           },
         }
@@ -82,6 +83,11 @@ describe('The Needy API (DB-Gotchi) Test Suite', () => {
     it('blocks other endpoints while angry', async () => {
       const res = await fetch(`${BASE_URL}/api/status`);
       assert.equal(res.status, 403);
+    });
+
+    it('configures abandonment threshold to 24 hours (86,400,000 ms)', () => {
+      const thresholdMs = parseInt(process.env.ABANDONMENT_THRESHOLD_MS, 10);
+      assert.equal(thresholdMs, 86400000);
     });
   });
 
@@ -150,6 +156,21 @@ describe('The Needy API (DB-Gotchi) Test Suite', () => {
 
       const state = await ServerState.findOne().lean();
       assert.equal(state.hungerLevel, 0);
+    });
+
+    it('ServerState.incrementHunger defaults to +5 increment', async () => {
+      await ServerState.findOneAndUpdate({}, { $set: { hungerLevel: 10 } });
+      const updated = await ServerState.incrementHunger();
+      assert.equal(updated.hungerLevel, 15);
+      // Clean up
+      await ServerState.findOneAndUpdate({}, { $set: { hungerLevel: 0 } });
+    });
+
+    it('configures metabolic interval to 3 hours (10,800,000 ms) and +5 per cycle', () => {
+      const tickMs = parseInt(process.env.HUNGER_TICK_INTERVAL_MS, 10);
+      const inc = parseInt(process.env.HUNGER_INCREMENT_PER_TICK, 10);
+      assert.equal(tickMs, 10800000);
+      assert.equal(inc, 5);
     });
   });
 

@@ -96,7 +96,7 @@ serverStateSchema.statics.feedPet = async function () {
 /**
  * Atomically increments hunger level using pipeline update clamped to max.
  */
-serverStateSchema.statics.incrementHunger = async function (increment = 10, max = 100) {
+serverStateSchema.statics.incrementHunger = async function (increment = 5, max = 100) {
   return this.findOneAndUpdate(
     {},
     [

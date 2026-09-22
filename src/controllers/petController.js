@@ -75,7 +75,7 @@ export const getStatus = async (req, res, next) => {
     const now = Date.now();
     const lastSeen = new Date(state.lastInteraction).getTime();
     const elapsedMs = now - lastSeen;
-    const thresholdMs = parseInt(process.env.ABANDONMENT_THRESHOLD_MS, 10) || 60000;
+    const thresholdMs = parseInt(process.env.ABANDONMENT_THRESHOLD_MS, 10) || 86400000;
     const timeUntilAbandonmentMs = Math.max(0, thresholdMs - elapsedMs);
 
     return res.status(200).json({

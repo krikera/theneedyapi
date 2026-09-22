@@ -98,12 +98,12 @@ Edit `.env` as desired:
 PORT=3000
 MONGODB_URI=mongodb://localhost:27017/needy_api
 
-# Emotional Abandonment Threshold (60000ms = 1 minute for fast testing)
-ABANDONMENT_THRESHOLD_MS=60000
+# Emotional Abandonment Threshold (86400000ms = 24 hours)
+ABANDONMENT_THRESHOLD_MS=86400000
 
-# Metabolic Hunger Decay (Every 15s, hunger rises by +10)
-HUNGER_TICK_INTERVAL_MS=15000
-HUNGER_INCREMENT_PER_TICK=10
+# Metabolic Hunger Decay (Every 3 hours, hunger rises by +5)
+HUNGER_TICK_INTERVAL_MS=10800000
+HUNGER_INCREMENT_PER_TICK=5
 ```
 
 ### 3. Seed Initial Documents

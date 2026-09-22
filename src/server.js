@@ -24,8 +24,8 @@ const startServer = async () => {
   const server = http.createServer(app);
 
   server.listen(PORT, () => {
-    const abandonmentSec = (parseInt(process.env.ABANDONMENT_THRESHOLD_MS, 10) || 60000) / 1000;
-    const tickSec = (parseInt(process.env.HUNGER_TICK_INTERVAL_MS, 10) || 15000) / 1000;
+    const abandonmentSec = (parseInt(process.env.ABANDONMENT_THRESHOLD_MS, 10) || 86400000) / 1000;
+    const tickSec = (parseInt(process.env.HUNGER_TICK_INTERVAL_MS, 10) || 10800000) / 1000;
 
     console.log(`
 ===================================================
